@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Text;
+using System.IO;
 
 namespace FontViewer {
    public partial class FormMain : Form {
@@ -16,9 +17,24 @@ namespace FontViewer {
          this.ReDrawFonts();
       }
 
-      FontFamily[] fonts = new InstalledFontCollection().Families;
       
       private void ReDrawFonts() {
+         FontFamily[] fonts = null;
+         if (this.rdoSystem.Checked) {
+            fonts = new InstalledFontCollection().Families; 
+         } else {
+            string dir = this.tbxDir.Text;
+            if (Directory.Exists(dir) == false)
+               fonts = new FontFamily[0];
+            else {
+               var files = Directory.GetFiles(dir);
+               PrivateFontCollection clt = new PrivateFontCollection();
+               foreach (var file in files) {
+                  clt.AddFontFile(file);
+               }
+               fonts = clt.Families;
+            }
+         }
 
          string example = this.tbxExample.Text;
          float fontSize = (float)this.numFontSize.Value;
@@ -26,7 +42,7 @@ namespace FontViewer {
          
          this.lvwFont.Items.Clear();
          this.lvwFont.BeginUpdate();
-         foreach(var font in this.fonts) {
+         foreach(var font in fonts) {
             if (font.Name == string.Empty)
                continue;
             ListViewItem item = new ListViewItem(new string[]{font.Name, example});
@@ -37,12 +53,33 @@ namespace FontViewer {
          this.lvwFont.EndUpdate();
       }
 
+      private void rdoSystem_CheckedChanged(object sender, EventArgs e) {
+         if (this.rdoSystem.Checked) {
+            this.tbxDir.Visible = false;
+            this.btnDir.Visible = false;
+         } else {
+            this.tbxDir.Visible = true;
+            this.btnDir.Visible = true;
+         }
+         this.ReDrawFonts();
+      }
+
       private void numFontSize_ValueChanged(object sender, EventArgs e) {
          this.ReDrawFonts();
       }
 
       private void tbxExample_TextChanged(object sender, EventArgs e) {
          this.ReDrawFonts();
+      }
+
+      private void tbxDir_TextChanged(object sender, EventArgs e) {
+         this.ReDrawFonts();
+      }
+
+      private void btnDir_Click(object sender, EventArgs e) {
+         if (dlgFolder.ShowDialog(this) != DialogResult.OK)
+            return;
+         this.tbxDir.Text = this.dlgFolder.SelectedPath;
       }
    }
 }
