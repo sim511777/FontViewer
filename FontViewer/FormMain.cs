@@ -81,5 +81,16 @@ namespace FontViewer {
             return;
          this.tbxDir.Text = this.dlgFolder.SelectedPath;
       }
+
+      private void btnHelp_Click(object sender, EventArgs e) {
+         var caption = "Font viewer";
+         var link = "https://github.com/sim511777/FontViewer";
+         var message = link + "\r\nWould you visit?";
+
+         var dr = MessageBox.Show(message, caption, MessageBoxButtons.YesNo);
+         if (dr == DialogResult.Yes) {
+            System.Diagnostics.Process.Start(link);
+         }
+      }
    }
 }

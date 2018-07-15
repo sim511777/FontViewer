@@ -32,6 +32,7 @@
          this.panel2 = new System.Windows.Forms.Panel();
          this.tbxDir = new System.Windows.Forms.TextBox();
          this.btnDir = new System.Windows.Forms.Button();
+         this.btnHelp = new System.Windows.Forms.Button();
          this.rdoFolder = new System.Windows.Forms.RadioButton();
          this.rdoSystem = new System.Windows.Forms.RadioButton();
          this.dlgFolder = new System.Windows.Forms.FolderBrowserDialog();
@@ -107,6 +108,7 @@
          // 
          this.panel2.Controls.Add(this.tbxDir);
          this.panel2.Controls.Add(this.btnDir);
+         this.panel2.Controls.Add(this.btnHelp);
          this.panel2.Controls.Add(this.rdoFolder);
          this.panel2.Controls.Add(this.rdoSystem);
          this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -122,7 +124,7 @@
          this.tbxDir.Location = new System.Drawing.Point(124, 0);
          this.tbxDir.Name = "tbxDir";
          this.tbxDir.ReadOnly = true;
-         this.tbxDir.Size = new System.Drawing.Size(639, 21);
+         this.tbxDir.Size = new System.Drawing.Size(616, 21);
          this.tbxDir.TabIndex = 3;
          this.tbxDir.Visible = false;
          this.tbxDir.TextChanged += new System.EventHandler(this.tbxDir_TextChanged);
@@ -130,7 +132,7 @@
          // btnDir
          // 
          this.btnDir.Dock = System.Windows.Forms.DockStyle.Right;
-         this.btnDir.Location = new System.Drawing.Point(763, 0);
+         this.btnDir.Location = new System.Drawing.Point(740, 0);
          this.btnDir.Name = "btnDir";
          this.btnDir.Size = new System.Drawing.Size(27, 21);
          this.btnDir.TabIndex = 2;
@@ -138,6 +140,17 @@
          this.btnDir.UseVisualStyleBackColor = true;
          this.btnDir.Visible = false;
          this.btnDir.Click += new System.EventHandler(this.btnDir_Click);
+         // 
+         // btnHelp
+         // 
+         this.btnHelp.Dock = System.Windows.Forms.DockStyle.Right;
+         this.btnHelp.Location = new System.Drawing.Point(767, 0);
+         this.btnHelp.Name = "btnHelp";
+         this.btnHelp.Size = new System.Drawing.Size(23, 21);
+         this.btnHelp.TabIndex = 4;
+         this.btnHelp.Text = "?";
+         this.btnHelp.UseVisualStyleBackColor = true;
+         this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
          // 
          // rdoFolder
          // 
@@ -197,6 +210,7 @@
       private System.Windows.Forms.RadioButton rdoFolder;
       private System.Windows.Forms.RadioButton rdoSystem;
       private System.Windows.Forms.FolderBrowserDialog dlgFolder;
+      private System.Windows.Forms.Button btnHelp;
    }
 }
 
