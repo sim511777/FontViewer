@@ -38,7 +38,7 @@ namespace FontViewer {
 
          string example = this.tbxExample.Text;
          float fontSize = (float)this.numFontSize.Value;
-         this.lvwFont.Font = new Font(SystemFonts.DefaultFont.FontFamily, fontSize*1.2f, FontStyle.Regular);
+         this.lvwFont.Font = new Font(SystemFonts.DialogFont.FontFamily, fontSize, FontStyle.Regular);
          
          this.lvwFont.Items.Clear();
          this.lvwFont.BeginUpdate();
@@ -46,7 +46,9 @@ namespace FontViewer {
             if (font.Name == string.Empty)
                continue;
             ListViewItem item = new ListViewItem(new string[]{font.Name, example});
-            item.Font = new Font(font, fontSize);
+            item.UseItemStyleForSubItems = false;
+            item.SubItems[0].Font = new Font(SystemFonts.DialogFont.FontFamily, fontSize);
+            item.SubItems[1].Font = new Font(font, fontSize);
             this.lvwFont.Items.Add(item);
          }
          
