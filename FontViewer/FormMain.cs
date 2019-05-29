@@ -19,20 +19,20 @@ namespace FontViewer {
 
 
         private void ReDrawFonts() {
-            FontFamily[] fonts = null;
+            FontFamily[] fontFams = null;
             if (this.rdoSystem.Checked) {
-                fonts = new InstalledFontCollection().Families;
+                fontFams = new InstalledFontCollection().Families;
             } else {
                 string dir = this.tbxDir.Text;
                 if (Directory.Exists(dir) == false)
-                    fonts = new FontFamily[0];
+                    fontFams = new FontFamily[0];
                 else {
                     var files = Directory.GetFiles(dir);
                     PrivateFontCollection clt = new PrivateFontCollection();
                     foreach (var file in files) {
                         clt.AddFontFile(file);
                     }
-                    fonts = clt.Families;
+                    fontFams = clt.Families;
                 }
             }
 
@@ -42,15 +42,27 @@ namespace FontViewer {
 
             this.lvwFont.Items.Clear();
             this.lvwFont.BeginUpdate();
-            foreach (var font in fonts) {
-                if (font.Name == string.Empty)
+            Bitmap bmp = new Bitmap(1000, 1000);
+            Graphics g = Graphics.FromImage(bmp);
+            bool monospaceOnly = this.chkMonospace.Checked;
+            foreach (var fontFam in fontFams) {
+                //if (font.Name == string.Empty)
+                //    continue;
+                var font = new Font(fontFam, fontSize);
+                float bigWidth = g.MeasureString("WWWW", font).Width;
+                float smallWidth = g.MeasureString("llll", font).Width;
+                if (monospaceOnly && (bigWidth != smallWidth)) {
+                    font.Dispose();
                     continue;
-                ListViewItem item = new ListViewItem(new string[] { font.Name, example });
+                }
+                ListViewItem item = new ListViewItem(new string[] { fontFam.Name, example });
                 item.UseItemStyleForSubItems = false;
                 item.SubItems[0].Font = new Font(SystemFonts.DialogFont.FontFamily, fontSize);
-                item.SubItems[1].Font = new Font(font, fontSize);
+                item.SubItems[1].Font = font;
                 this.lvwFont.Items.Add(item);
             }
+            g.Dispose();
+            bmp.Dispose();
 
             this.lvwFont.EndUpdate();
         }
@@ -93,6 +105,10 @@ namespace FontViewer {
             if (dr == DialogResult.Yes) {
                 System.Diagnostics.Process.Start(link);
             }
+        }
+
+        private void chkMonospace_CheckedChanged(object sender, EventArgs e) {
+            this.ReDrawFonts();
         }
     }
 }
